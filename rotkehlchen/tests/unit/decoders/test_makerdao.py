@@ -101,7 +101,7 @@ def test_makerdao_simple_transaction(
             location_label=dsproxy_address,  # User' DSProxy address
             notes='Unwrap 0.6 WETH',
             counterparty=CPT_WETH,
-            address=string_to_evm_address(dsproxy_address),  # User' DSProxy address
+            address=A_WETH.resolve_to_evm_token().evm_address,  # User' DSProxy address
         ), EvmEvent(
             tx_hash=tx_hash,
             sequence_index=118,

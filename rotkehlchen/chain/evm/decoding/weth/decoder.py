@@ -133,7 +133,7 @@ class WethDecoderBase(DecoderInterface, metaclass=ABCMeta):
             location_label=withdrawer,
             counterparty=self.counterparty,
             notes=f'Unwrap {withdrawn_amount} {self.wrapped_token.symbol}',
-            address=context.transaction.to_address,
+            address=self.wrapped_token.evm_address,
         )
         maybe_reshuffle_events(
             ordered_events=[out_event, in_event],

@@ -2416,7 +2416,7 @@ def test_makerdao_sai_cdp_migration(ethereum_transaction_decoder, ethereum_accou
             location_label=dsproxy_address,
             notes='Unwrap 0.022255814 WETH',
             counterparty=CPT_WETH,
-            address=string_to_evm_address('0x22953B20aB21eF5b2A28c1bB55734fB2525Ebaf2'),
+            address=A_WETH.resolve_to_evm_token().evm_address,
         ), EvmEvent(
             tx_hash=evmhash,
             sequence_index=104,
