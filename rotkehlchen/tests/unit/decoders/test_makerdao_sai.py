@@ -2300,8 +2300,6 @@ def test_makerdao_sai_proxy_interaction(ethereum_transaction_decoder):
 @pytest.mark.vcr(filter_query_parameters=['apikey'])
 @pytest.mark.parametrize('ethereum_accounts', [['0xca482bCd75A6E0697aD6A1732aa187310b8372Df']])
 def test_makerdao_sai_cdp_migration(ethereum_transaction_decoder, ethereum_accounts):
-    """Data taken from
-    https://etherscan.io/tx/0x03620c6bf5edb7a7935953337ffcfac70d631cf2012d6c80d36828d636063318
     """
 
     """Check that a Sai CDP migration is decoded properly"""
