@@ -1,6 +1,7 @@
 =========
 Changelog
 =========
+* :feature:`-` Support for Lido contracts decoding on ethereum chain
 
 * :release:`1.33.0 <2024-05-08>`
 * :feature:`7798` rotki now accurately decodes transactions on the Kyber swap aggregator across all supported chains. 
