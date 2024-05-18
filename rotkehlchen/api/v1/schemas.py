@@ -1332,6 +1332,7 @@ class ModifiableSettingsSchema(Schema):
     )
     auto_delete_calendar_entries = fields.Boolean(load_default=None)
     auto_create_calendar_reminders = fields.Boolean(load_default=None)
+    ask_user_upon_size_discrepancy = fields.Boolean(load_default=None)
 
     @validates_schema
     def validate_settings_schema(
@@ -1392,6 +1393,7 @@ class ModifiableSettingsSchema(Schema):
             oracle_penalty_duration=data['oracle_penalty_duration'],
             auto_delete_calendar_entries=data['auto_delete_calendar_entries'],
             auto_create_calendar_reminders=data['auto_create_calendar_reminders'],
+            ask_user_upon_size_discrepancy=data['ask_user_upon_size_discrepancy'],
         )
 
 

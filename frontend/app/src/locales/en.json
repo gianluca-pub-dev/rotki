@@ -1992,7 +1992,6 @@
         "message_all": "Are you sure you want to purge the cached data for all {source}?",
         "title": "Confirm cached data purge"
       },
-
       "error": "Purging the cached data for {source} failed: {message}",
       "subtitle": "Allows you to purge data cached by rotki",
       "success": "Data was successfully deleted",
@@ -2336,9 +2335,12 @@
     },
     "inputs": {
       "api_key": "API Key",
+      "api_key_name": "API Key Name",
       "api_secret": "API Secret",
+      "format": "Format",
       "kraken_account": "Select the type of your Kraken account",
-      "passphrase": "Passphrase"
+      "passphrase": "Passphrase",
+      "private_key": "Private Key"
     },
     "keys": "Keys",
     "subtitle": "rotki can connect to supported exchanges and automatically pull your trades and balances from them. See the {0} for more information.",
@@ -2450,7 +2452,13 @@
         "message": "Successfully updated the credentials for {serviceName}"
       }
     },
-    "subtitle": "rotki connects to various service providers in order to obtain information such as historical prices or blockchain data. In certain cases rotki depends on these APIs for basic information, in which case you will need to provide an API key."
+    "subtitle": "rotki connects to various service providers in order to obtain information such as historical prices or blockchain data. In certain cases rotki depends on these APIs for basic information, in which case you will need to provide an API key.",
+    "thegraph": {
+      "delete_tooltip": "Deletes the Graph API key",
+      "description": "rotki uses the Graph to obtain information about balances of balancer pools.",
+      "hint": "Enter your The Graph API key",
+      "title": "The Graph"
+    }
   },
   "external_trade_form": {
     "amount": {
@@ -3533,8 +3541,14 @@
     "missing_api_key": {
       "action": "Enter key",
       "get_key": "Get API key",
-      "message": "Rotki queries for {location} chain is working slower because you dont have {location} {service} API key configured. Press \"@:notification_messages.missing_api_key.get_key\" to make one or \"@:notification_messages.missing_api_key.action\" to add it in the app.",
-      "title": "{location} {service} API key"
+      "etherscan": {
+        "message": "Rotki queries for {location} chain are working slower because you dont have {location} {service} API key configured. Press @.quote:notification_messages.missing_api_key.get_key to make one or @.quote:notification_messages.missing_api_key.action to add it in the app.",
+        "title": "{location} {service} API key"
+      },
+      "thegraph": {
+        "message": "Rotki cannot query {location} data because you don't have {service} API key configured, or the API key you are using isn't authorized for {location}. Press @.quote:notification_messages.missing_api_key.get_key to make one or @.quote:notification_messages.missing_api_key.action to add it in the app. Read the docs {docs} for more information.",
+        "title": "{service} API key for {location}"
+      }
     },
     "new_detected_token": {
       "action": "See more",
@@ -4224,6 +4238,13 @@
     "db_upload_result": {
       "message": "We could not complete the upload because {reason}",
       "title": "Database sync attempt unsuccessful"
+    },
+    "setting": {
+      "title": "Sync setting",
+      "ask_user_upon_size_discrepancy": {
+        "label": "Force-push when a size discrepancy occurs during automatic database sync.",
+        "confirm_label": "Force-push whenever a size discrepancy occurs."
+      }
     }
   },
   "table_filter": {
@@ -4559,7 +4580,6 @@
       "tx_hash": "filter by tx hash(es)",
       "validator_index": "filter by validator index(es)"
     },
-    "filtering_premium_hint": "@:common.available_to_premium @:common.visit_website",
     "form": {
       "account": {
         "label": "Account to be associated with the transaction",

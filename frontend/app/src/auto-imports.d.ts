@@ -71,6 +71,7 @@ declare global {
   const createGenericProjection: typeof import('@vueuse/math')['createGenericProjection']
   const createGlobalState: typeof import('@vueuse/core')['createGlobalState']
   const createInjectionState: typeof import('@vueuse/core')['createInjectionState']
+  const createNewBlockchainAccount: typeof import('./composables/accounts/blockchain/use-account-manage')['createNewBlockchainAccount']
   const createNotification: typeof import('./utils/notifications')['createNotification']
   const createPinia: typeof import('pinia')['createPinia']
   const createProjection: typeof import('@vueuse/math')['createProjection']
@@ -96,6 +97,7 @@ declare global {
   const downloadFileByTextContent: typeof import('./utils/download')['downloadFileByTextContent']
   const downloadFileByUrl: typeof import('./utils/download')['downloadFileByUrl']
   const eagerComputed: typeof import('@vueuse/core')['eagerComputed']
+  const editBlockchainAccount: typeof import('./composables/accounts/blockchain/use-account-manage')['editBlockchainAccount']
   const effectScope: typeof import('vue')['effectScope']
   const extendRef: typeof import('@vueuse/core')['extendRef']
   const fetchDataAsync: typeof import('./utils/fetch-async')['fetchDataAsync']
@@ -134,6 +136,7 @@ declare global {
   const getSortItems: typeof import('./utils/assets')['getSortItems']
   const getTags: typeof import('./utils/tags')['getTags']
   const getTextToken: typeof import('./utils/text')['getTextToken']
+  const getTheGraphRegisterUrl: typeof import('./utils/url')['getTheGraphRegisterUrl']
   const getValidSelectorFromEvmAddress: typeof import('./utils/assets')['getValidSelectorFromEvmAddress']
   const getValidatorData: typeof import('./utils/blockchain/accounts/index')['getValidatorData']
   const groupAssetBreakdown: typeof import('./utils/balances')['groupAssetBreakdown']
@@ -330,6 +333,7 @@ declare global {
   const useAccountDelete: typeof import('./composables/accounts/blockchain/use-account-delete')['useAccountDelete']
   const useAccountDialog: typeof import('./composables/accounts/dialog')['useAccountDialog']
   const useAccountLoading: typeof import('./composables/accounts/loading')['useAccountLoading']
+  const useAccountManage: typeof import('./composables/accounts/blockchain/use-account-manage')['useAccountManage']
   const useAccountManagement: typeof import('./composables/user/account')['useAccountManagement']
   const useAccountMigrationStore: typeof import('./store/blockchain/accounts/migrate')['useAccountMigrationStore']
   const useAccountingApi: typeof import('./composables/api/settings/accounting-api')['useAccountingApi']
@@ -366,6 +370,7 @@ declare global {
   const useAssetFilter: typeof import('./composables/filters/assets')['useAssetFilter']
   const useAssetIcon: typeof import('./composables/assets/icon')['useAssetIcon']
   const useAssetIconApi: typeof import('./composables/api/assets/icon')['useAssetIconApi']
+  const useAssetIconStore: typeof import('./store/assets/icon')['useAssetIconStore']
   const useAssetIgnoreApi: typeof import('./composables/api/assets/ignore')['useAssetIgnoreApi']
   const useAssetInfoApi: typeof import('./composables/api/assets/info')['useAssetInfoApi']
   const useAssetInfoRetrieval: typeof import('./composables/assets/retrieval')['useAssetInfoRetrieval']
@@ -525,6 +530,7 @@ declare global {
   const useHistoryTransactions: typeof import('./composables/history/events/tx/index')['useHistoryTransactions']
   const useHistoryTransactionsForm: typeof import('./composables/history/events/tx/form')['useHistoryTransactionsForm']
   const useI18n: typeof import('./composables/usei18n')['useI18n']
+  const useI18nLocale: typeof import('./composables/usei18n')['useI18nLocale']
   const useIdle: typeof import('@vueuse/core')['useIdle']
   const useIgnore: typeof import('./composables/history/index')['useIgnore']
   const useIgnoredAssetsStore: typeof import('./store/assets/ignored')['useIgnoredAssetsStore']
@@ -837,6 +843,7 @@ declare module 'vue' {
     readonly createGenericProjection: UnwrapRef<typeof import('@vueuse/math')['createGenericProjection']>
     readonly createGlobalState: UnwrapRef<typeof import('@vueuse/core')['createGlobalState']>
     readonly createInjectionState: UnwrapRef<typeof import('@vueuse/core')['createInjectionState']>
+    readonly createNewBlockchainAccount: UnwrapRef<typeof import('./composables/accounts/blockchain/use-account-manage')['createNewBlockchainAccount']>
     readonly createNotification: UnwrapRef<typeof import('./utils/notifications')['createNotification']>
     readonly createPinia: UnwrapRef<typeof import('pinia')['createPinia']>
     readonly createProjection: UnwrapRef<typeof import('@vueuse/math')['createProjection']>
@@ -862,6 +869,7 @@ declare module 'vue' {
     readonly downloadFileByTextContent: UnwrapRef<typeof import('./utils/download')['downloadFileByTextContent']>
     readonly downloadFileByUrl: UnwrapRef<typeof import('./utils/download')['downloadFileByUrl']>
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
+    readonly editBlockchainAccount: UnwrapRef<typeof import('./composables/accounts/blockchain/use-account-manage')['editBlockchainAccount']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
     readonly fetchDataAsync: UnwrapRef<typeof import('./utils/fetch-async')['fetchDataAsync']>
@@ -899,6 +907,7 @@ declare module 'vue' {
     readonly getSortItems: UnwrapRef<typeof import('./utils/assets')['getSortItems']>
     readonly getTags: UnwrapRef<typeof import('./utils/tags')['getTags']>
     readonly getTextToken: UnwrapRef<typeof import('./utils/text')['getTextToken']>
+    readonly getTheGraphRegisterUrl: UnwrapRef<typeof import('./utils/url')['getTheGraphRegisterUrl']>
     readonly getValidSelectorFromEvmAddress: UnwrapRef<typeof import('./utils/assets')['getValidSelectorFromEvmAddress']>
     readonly getValidatorData: UnwrapRef<typeof import('./utils/blockchain/accounts/index')['getValidatorData']>
     readonly groupAssetBreakdown: UnwrapRef<typeof import('./utils/balances')['groupAssetBreakdown']>
@@ -1089,8 +1098,8 @@ declare module 'vue' {
     readonly useAaveStore: UnwrapRef<typeof import('./store/defi/aave/index')['useAaveStore']>
     readonly useAbs: UnwrapRef<typeof import('@vueuse/math')['useAbs']>
     readonly useAccountDelete: UnwrapRef<typeof import('./composables/accounts/blockchain/use-account-delete')['useAccountDelete']>
-    readonly useAccountDialog: UnwrapRef<typeof import('./composables/accounts/dialog')['useAccountDialog']>
     readonly useAccountLoading: UnwrapRef<typeof import('./composables/accounts/loading')['useAccountLoading']>
+    readonly useAccountManage: UnwrapRef<typeof import('./composables/accounts/blockchain/use-account-manage')['useAccountManage']>
     readonly useAccountManagement: UnwrapRef<typeof import('./composables/user/account')['useAccountManagement']>
     readonly useAccountMigrationStore: UnwrapRef<typeof import('./store/blockchain/accounts/migrate')['useAccountMigrationStore']>
     readonly useAccountingApi: UnwrapRef<typeof import('./composables/api/settings/accounting-api')['useAccountingApi']>
@@ -1125,8 +1134,8 @@ declare module 'vue' {
     readonly useAssetCacheStore: UnwrapRef<typeof import('./store/assets/asset-cache')['useAssetCacheStore']>
     readonly useAssetCexMappingApi: UnwrapRef<typeof import('./composables/api/assets/cex-mapping')['useAssetCexMappingApi']>
     readonly useAssetFilter: UnwrapRef<typeof import('./composables/filters/assets')['useAssetFilter']>
-    readonly useAssetIcon: UnwrapRef<typeof import('./composables/assets/icon')['useAssetIcon']>
     readonly useAssetIconApi: UnwrapRef<typeof import('./composables/api/assets/icon')['useAssetIconApi']>
+    readonly useAssetIconStore: UnwrapRef<typeof import('./store/assets/icon')['useAssetIconStore']>
     readonly useAssetIgnoreApi: UnwrapRef<typeof import('./composables/api/assets/ignore')['useAssetIgnoreApi']>
     readonly useAssetInfoApi: UnwrapRef<typeof import('./composables/api/assets/info')['useAssetInfoApi']>
     readonly useAssetInfoRetrieval: UnwrapRef<typeof import('./composables/assets/retrieval')['useAssetInfoRetrieval']>
@@ -1283,6 +1292,7 @@ declare module 'vue' {
     readonly useHistoryTransactions: UnwrapRef<typeof import('./composables/history/events/tx/index')['useHistoryTransactions']>
     readonly useHistoryTransactionsForm: UnwrapRef<typeof import('./composables/history/events/tx/form')['useHistoryTransactionsForm']>
     readonly useI18n: UnwrapRef<typeof import('./composables/usei18n')['useI18n']>
+    readonly useI18nLocale: UnwrapRef<typeof import('./composables/usei18n')['useI18nLocale']>
     readonly useIdle: UnwrapRef<typeof import('@vueuse/core')['useIdle']>
     readonly useIgnore: UnwrapRef<typeof import('./composables/history/index')['useIgnore']>
     readonly useIgnoredAssetsStore: UnwrapRef<typeof import('./store/assets/ignored')['useIgnoredAssetsStore']>
@@ -1586,6 +1596,7 @@ declare module '@vue/runtime-core' {
     readonly createGenericProjection: UnwrapRef<typeof import('@vueuse/math')['createGenericProjection']>
     readonly createGlobalState: UnwrapRef<typeof import('@vueuse/core')['createGlobalState']>
     readonly createInjectionState: UnwrapRef<typeof import('@vueuse/core')['createInjectionState']>
+    readonly createNewBlockchainAccount: UnwrapRef<typeof import('./composables/accounts/blockchain/use-account-manage')['createNewBlockchainAccount']>
     readonly createNotification: UnwrapRef<typeof import('./utils/notifications')['createNotification']>
     readonly createPinia: UnwrapRef<typeof import('pinia')['createPinia']>
     readonly createProjection: UnwrapRef<typeof import('@vueuse/math')['createProjection']>
@@ -1611,6 +1622,7 @@ declare module '@vue/runtime-core' {
     readonly downloadFileByTextContent: UnwrapRef<typeof import('./utils/download')['downloadFileByTextContent']>
     readonly downloadFileByUrl: UnwrapRef<typeof import('./utils/download')['downloadFileByUrl']>
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
+    readonly editBlockchainAccount: UnwrapRef<typeof import('./composables/accounts/blockchain/use-account-manage')['editBlockchainAccount']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
     readonly fetchDataAsync: UnwrapRef<typeof import('./utils/fetch-async')['fetchDataAsync']>
@@ -1648,6 +1660,7 @@ declare module '@vue/runtime-core' {
     readonly getSortItems: UnwrapRef<typeof import('./utils/assets')['getSortItems']>
     readonly getTags: UnwrapRef<typeof import('./utils/tags')['getTags']>
     readonly getTextToken: UnwrapRef<typeof import('./utils/text')['getTextToken']>
+    readonly getTheGraphRegisterUrl: UnwrapRef<typeof import('./utils/url')['getTheGraphRegisterUrl']>
     readonly getValidSelectorFromEvmAddress: UnwrapRef<typeof import('./utils/assets')['getValidSelectorFromEvmAddress']>
     readonly getValidatorData: UnwrapRef<typeof import('./utils/blockchain/accounts/index')['getValidatorData']>
     readonly groupAssetBreakdown: UnwrapRef<typeof import('./utils/balances')['groupAssetBreakdown']>
@@ -1838,8 +1851,8 @@ declare module '@vue/runtime-core' {
     readonly useAaveStore: UnwrapRef<typeof import('./store/defi/aave/index')['useAaveStore']>
     readonly useAbs: UnwrapRef<typeof import('@vueuse/math')['useAbs']>
     readonly useAccountDelete: UnwrapRef<typeof import('./composables/accounts/blockchain/use-account-delete')['useAccountDelete']>
-    readonly useAccountDialog: UnwrapRef<typeof import('./composables/accounts/dialog')['useAccountDialog']>
     readonly useAccountLoading: UnwrapRef<typeof import('./composables/accounts/loading')['useAccountLoading']>
+    readonly useAccountManage: UnwrapRef<typeof import('./composables/accounts/blockchain/use-account-manage')['useAccountManage']>
     readonly useAccountManagement: UnwrapRef<typeof import('./composables/user/account')['useAccountManagement']>
     readonly useAccountMigrationStore: UnwrapRef<typeof import('./store/blockchain/accounts/migrate')['useAccountMigrationStore']>
     readonly useAccountingApi: UnwrapRef<typeof import('./composables/api/settings/accounting-api')['useAccountingApi']>
@@ -1874,8 +1887,8 @@ declare module '@vue/runtime-core' {
     readonly useAssetCacheStore: UnwrapRef<typeof import('./store/assets/asset-cache')['useAssetCacheStore']>
     readonly useAssetCexMappingApi: UnwrapRef<typeof import('./composables/api/assets/cex-mapping')['useAssetCexMappingApi']>
     readonly useAssetFilter: UnwrapRef<typeof import('./composables/filters/assets')['useAssetFilter']>
-    readonly useAssetIcon: UnwrapRef<typeof import('./composables/assets/icon')['useAssetIcon']>
     readonly useAssetIconApi: UnwrapRef<typeof import('./composables/api/assets/icon')['useAssetIconApi']>
+    readonly useAssetIconStore: UnwrapRef<typeof import('./store/assets/icon')['useAssetIconStore']>
     readonly useAssetIgnoreApi: UnwrapRef<typeof import('./composables/api/assets/ignore')['useAssetIgnoreApi']>
     readonly useAssetInfoApi: UnwrapRef<typeof import('./composables/api/assets/info')['useAssetInfoApi']>
     readonly useAssetInfoRetrieval: UnwrapRef<typeof import('./composables/assets/retrieval')['useAssetInfoRetrieval']>
@@ -2032,6 +2045,7 @@ declare module '@vue/runtime-core' {
     readonly useHistoryTransactions: UnwrapRef<typeof import('./composables/history/events/tx/index')['useHistoryTransactions']>
     readonly useHistoryTransactionsForm: UnwrapRef<typeof import('./composables/history/events/tx/form')['useHistoryTransactionsForm']>
     readonly useI18n: UnwrapRef<typeof import('./composables/usei18n')['useI18n']>
+    readonly useI18nLocale: UnwrapRef<typeof import('./composables/usei18n')['useI18nLocale']>
     readonly useIdle: UnwrapRef<typeof import('@vueuse/core')['useIdle']>
     readonly useIgnore: UnwrapRef<typeof import('./composables/history/index')['useIgnore']>
     readonly useIgnoredAssetsStore: UnwrapRef<typeof import('./store/assets/ignored')['useIgnoredAssetsStore']>

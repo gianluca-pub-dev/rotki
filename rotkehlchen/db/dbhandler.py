@@ -69,6 +69,7 @@ from rotkehlchen.db.misc import detect_sqlcipher_version
 from rotkehlchen.db.schema import DB_SCRIPT_CREATE_TABLES
 from rotkehlchen.db.schema_transient import DB_SCRIPT_CREATE_TRANSIENT_TABLES
 from rotkehlchen.db.settings import (
+    DEFAULT_ASK_USER_UPON_SIZE_DISCREPANCY,
     DEFAULT_LAST_DATA_MIGRATION,
     DEFAULT_PREMIUM_SHOULD_SYNC,
     ROTKEHLCHEN_DB_VERSION,
@@ -210,6 +211,7 @@ class DBHandler:
             'last_data_migration': (int, DEFAULT_LAST_DATA_MIGRATION),
             'non_syncing_exchanges': (lambda data: [ExchangeLocationID.deserialize(x) for x in json.loads(data)], []),  # noqa: E501
             'beacon_rpc_endpoint': (str, None),
+            'ask_user_upon_size_discrepancy': (str_to_bool, DEFAULT_ASK_USER_UPON_SIZE_DISCREPANCY),  # noqa: E501
         }
         self.conn: DBConnection = None  # type: ignore
         self.conn_transient: DBConnection = None  # type: ignore
@@ -410,6 +412,10 @@ class DBHandler:
     def get_setting(self, cursor: 'DBCursor', name: Literal['beacon_rpc_endpoint']) -> str:
         ...
 
+    @overload
+    def get_setting(self, cursor: 'DBCursor', name: Literal['ask_user_upon_size_discrepancy']) -> bool:  # noqa: E501
+        ...
+
     def get_setting(
             self,
             cursor: 'DBCursor',
@@ -422,8 +428,9 @@ class DBHandler:
                 'last_data_migration',
                 'non_syncing_exchanges',
                 'beacon_rpc_endpoint',
+                'ask_user_upon_size_discrepancy',
             ],
-    ) -> int | None | (Timestamp | (bool | AssetWithOracles)) | list['ExchangeLocationID'] | str:
+    ) -> int | None | Timestamp | bool | AssetWithOracles | list['ExchangeLocationID'] | str:
         deserializer, default_value = self.setting_to_default_type[name]
         cursor.execute(
             'SELECT value FROM settings WHERE name=?;', (name,),
@@ -444,8 +451,9 @@ class DBHandler:
                 'ongoing_upgrade_from_version',
                 'main_currency',
                 'non_syncing_exchanges',
+                'ask_user_upon_size_discrepancy',
             ],
-            value: int | (Timestamp | Asset) | str,
+            value: int | (Timestamp | Asset) | str | bool,
     ) -> None:
         write_cursor.execute(
             'INSERT OR REPLACE INTO settings(name, value) VALUES(?, ?)',
@@ -713,6 +721,15 @@ class DBHandler:
     def get_dynamic_cache(
             self,
             cursor: 'DBCursor',
+            name: Literal[DBCacheDynamic.LAST_BLOCK_ID],
+            **kwargs: Unpack[LabeledLocationIdArgsType],
+    ) -> int | None:
+        ...
+
+    @overload
+    def get_dynamic_cache(
+            self,
+            cursor: 'DBCursor',
             name: Literal[DBCacheDynamic.WITHDRAWALS_TS],
             **kwargs: Unpack[AddressArgType],
     ) -> Timestamp | None:
@@ -774,6 +791,16 @@ class DBHandler:
             self,
             write_cursor: 'DBCursor',
             name: Literal[DBCacheDynamic.LAST_QUERY_ID],
+            value: int,
+            **kwargs: Unpack[LabeledLocationIdArgsType],
+    ) -> None:
+        ...
+
+    @overload
+    def set_dynamic_cache(
+            self,
+            write_cursor: 'DBCursor',
+            name: Literal[DBCacheDynamic.LAST_BLOCK_ID],
             value: int,
             **kwargs: Unpack[LabeledLocationIdArgsType],
     ) -> None:
