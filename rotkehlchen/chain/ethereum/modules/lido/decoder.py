@@ -1,5 +1,4 @@
 import logging
-from collections.abc import Callable
 from typing import TYPE_CHECKING, Any
 
 from rotkehlchen.chain.ethereum.utils import token_normalized_value_decimals
@@ -18,7 +17,7 @@ from rotkehlchen.constants.assets import A_ETH, A_STETH, A_WSTETH
 from rotkehlchen.fval import FVal
 from rotkehlchen.history.events.structures.types import HistoryEventSubType, HistoryEventType
 from rotkehlchen.logging import RotkehlchenLogsAdapter
-from rotkehlchen.types import ChecksumEvmAddress, EvmTransaction
+from rotkehlchen.types import ChecksumEvmAddress
 from rotkehlchen.utils.misc import hex_or_bytes_to_address, hex_or_bytes_to_int
 
 from .constants import (
@@ -31,8 +30,6 @@ from .constants import (
 if TYPE_CHECKING:
     from rotkehlchen.chain.evm.decoding.base import BaseDecoderTools
     from rotkehlchen.chain.evm.node_inquirer import EvmNodeInquirer
-    from rotkehlchen.chain.evm.structures import EvmTxReceiptLog
-    from rotkehlchen.history.events.structures.evm_event import EvmEvent
     from rotkehlchen.user_messages import MessagesAggregator
 
 logger = logging.getLogger(__name__)
@@ -109,7 +106,7 @@ class LidoDecoder(DecoderInterface):
                 paired_event = event
                 action_from_event_type = HistoryEventType.RECEIVE
                 action_to_event_subtype = HistoryEventSubType.RECEIVE_WRAPPED
-                action_to_notes = f'Receive {{amount}} stETH in exchange of the deposited ETH'  # {amount} to be replaced in post decoding  # noqa: F541,E501
+                action_to_notes = f'Receive {steth_minted_tokens} stETH in exchange of the deposited ETH'  # noqa: E501
                 break
 
         action_items = []  # also create an action item for the reception of the stETH tokens
@@ -134,28 +131,6 @@ class LidoDecoder(DecoderInterface):
             return DEFAULT_DECODING_OUTPUT
 
         return DecodingOutput(action_items=action_items, matched_counterparty=CPT_LIDO_ETH)
-
-    def _map_erc20_lido_token_transfer(
-            self,
-            decoded_events: list['EvmEvent'],
-            transaction: 'EvmTransaction',  # pylint: disable=unused-argument
-            all_logs: list['EvmTxReceiptLog'],  # pylint: disable=unused-argument
-    ) -> list['EvmEvent']:
-        """Post decoding function to map the ERC20 Lido tokens reception"""
-        """TODO: To be checked with Rotki team, I am adding post decoding because I see that ERC20
-        transfers are not available in decoded_events at the time of decode by address rules
-        from what I have seen in the code. I got this solution looking at compound rules"""
-        for event in decoded_events:
-            if (
-                (event.counterparty == CPT_LIDO_ETH and event.notes is not None and event.extra_data is not None) and  # noqa: E501
-                (
-                    (event.event_type == HistoryEventType.RECEIVE and event.event_subtype == HistoryEventSubType.RECEIVE_WRAPPED) or  # noqa: E501
-                    (event.event_type == HistoryEventType.SPEND and event.event_subtype == HistoryEventSubType.RETURN_WRAPPED)  # noqa: E501
-                )
-            ):
-                event.notes = event.notes.format(amount=event.balance.amount)  # set the amount  # noqa: E501
-                break
-        return decoded_events
 
     def _decode_lido_transfer_shares_for_steth_wrap(
             self, context: DecoderContext,
@@ -228,7 +203,7 @@ class LidoDecoder(DecoderInterface):
                 event.event_type = HistoryEventType.RECEIVE
                 event.event_subtype = HistoryEventSubType.RECEIVE_WRAPPED
                 event.counterparty = CPT_LIDO_ETH
-                event.notes = f'Receive {wsteth_received_amount} wstETH in exchange of the deposited stETH at wstETH ratio {paired_wsteth_ratio}'  # {amount} to be replaced in post decoding  # noqa: E501,
+                event.notes = f'Receive {wsteth_received_amount} wstETH in exchange of the deposited stETH at wstETH ratio {paired_wsteth_ratio}'  # noqa: E501,
                 in_event = event
         if in_event and out_event:
             maybe_reshuffle_events(
@@ -450,7 +425,7 @@ class LidoDecoder(DecoderInterface):
                 paired_eth_transfer_event = event
                 action_from_event_type = HistoryEventType.RECEIVE
                 action_to_event_subtype = HistoryEventSubType.RECEIVE_WRAPPED
-                action_to_notes = f'Receive {{amount}} wstETH in exchange of the deposited ETH at wstETH ratio {paired_wsteth_ratio}'  # {amount} to be replaced in post decoding  # noqa: E501
+                action_to_notes = f'Receive {wsteth_minted_tokens} wstETH in exchange of the deposited ETH at wstETH ratio {paired_wsteth_ratio}'  # {amount} to be replaced in post decoding  # noqa: E501
 
         action_items = []  # also create an action item for the receive of the wstETH tokens
         if paired_eth_transfer_event is not None and action_from_event_type is not None:
@@ -528,9 +503,6 @@ class LidoDecoder(DecoderInterface):
             self.steth_evm_address: CPT_LIDO_ETH,
             self.wsteth_evm_address: CPT_LIDO_ETH,
         }
-
-    def post_decoding_rules(self) -> dict[str, list[tuple[int, Callable]]]:
-        return {CPT_LIDO_ETH: [(0, self._map_erc20_lido_token_transfer)]}
 
     @staticmethod
     def counterparties() -> tuple[CounterpartyDetails, ...]:
